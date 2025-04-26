@@ -1,0 +1,27 @@
+stages:
+  - test
+
+default:
+  image:
+    name: docker-registry.wikimedia.org/releng/node18-test
+    entrypoint: [ "" ]
+  cache:
+    - key: $CI_COMMIT_REF_SLUG
+      paths:
+        - .npm/
+
+variables:
+  NPM_CONFIG_CACHE: .npm
+  NPM_CONFIG_PREFER_OFFLINE: "true"
+
+test-job:
+  stage: test
+  script:
+    - npm ci
+    - npm test
+
+test-package-lock-job:
+  stage: test
+  script:
+    - npm i --package-lock-only
+    - git diff --exit-code
