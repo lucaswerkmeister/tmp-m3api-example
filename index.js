@@ -1,4 +1,6 @@
 /**
+ * Returns its argument unchanged.
+ *
  * @param {*} v
  * @return {*}
  */
