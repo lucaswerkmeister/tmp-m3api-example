@@ -45,7 +45,7 @@ doc-job:
   script:
     - npm ci
     - npm run doc
-    - git clone --branch=doc --depth=1 "https://gitlab-ci-token:$SECRET_GIT_TOKEN@gitlab.wikimedia.org/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME.git" doc-branch
+    - git clone --branch=doc --depth=1 "https://gitlab-ci-token:$SECRET_GIT_TOKEN@gitlab.wikimedia.org/$CI_PROJECT_PATH.git" doc-branch
     # eslint-disable max-len
     - |
       # update old documentation
