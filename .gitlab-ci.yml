@@ -31,15 +31,12 @@ release-job:
   stage: release
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d/'
-  release:
-    name: $CI_COMMIT_TAG
-    tag_name: $CI_COMMIT_TAG
-    description: $CI_COMMIT_TAG_MESSAGE
   script:
     - mkdir -p ~/.local/bin
     - curl -L -o ~/.local/bin/release-cli https://gitlab.com/gitlab-org/release-cli/-/releases/v0.23.0/downloads/bin/release-cli-linux-amd64
     - chmod +x ~/.local/bin/release-cli
     - export PATH=$PATH:~/.local/bin
+    - release-cli create --name="$CI_COMMIT_TAG" --tag-name="$CI_COMMIT_TAG" --description="$CI_COMMIT_TAG_MESSAGE"
 
 doc-job:
   stage: release
