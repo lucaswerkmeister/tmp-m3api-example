@@ -45,6 +45,7 @@ doc-job:
   script:
     - npm ci
     - npm run doc
+    - echo git clone --branch=doc --depth=1 "https://gitlab-ci-token:$SECRET_GIT_TOKEN@gitlab.wikimedia.org/$CI_PROJECT_PATH.git" doc-branch
     - git clone --branch=doc --depth=1 "https://gitlab-ci-token:$SECRET_GIT_TOKEN@gitlab.wikimedia.org/$CI_PROJECT_PATH.git" doc-branch
     # eslint-disable max-len
     - |
@@ -60,6 +61,7 @@ doc-job:
       done;
       # update redirect to latest version
       sed -i '/http-equiv/ s|^.*$|<meta http-equiv="refresh" content="0; URL=${{ github.ref_name }}/">|' index.html;
+      cd ..;
     # eslint-enable
     - |
       # publish new documentation
