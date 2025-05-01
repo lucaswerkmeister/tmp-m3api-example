@@ -67,6 +67,8 @@ doc-job:
       # publish new documentation
       mv doc "doc-branch/$CI_COMMIT_TAG";
       cd doc-branch;
+      git config user.name gitlab-ci;
+      git config user.email gitlab-ci@example.com; # TODO?
       git add .;
       git commit -m "Publish docs for $CI_COMMIT_TAG";
       git push;
