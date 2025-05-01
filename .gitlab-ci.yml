@@ -1,5 +1,6 @@
 stages:
   - test
+  - release
 
 default:
   image:
@@ -25,3 +26,41 @@ test-package-lock-job:
   script:
     - npm i --package-lock-only
     - git diff --exit-code
+
+release-job:
+  stage: release
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d/'
+  release:
+    name: '$CI_COMMIT_TAG'
+    tag_name: '$CI_COMMIT_TAG'
+    description: '$CI_COMMIT_TAG_MESSAGE'
+
+doc-job:
+  stage: release
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d/'
+  script:
+    - npm ci
+    - npm run doc
+    - git clone --branch=doc --depth=1 "https://gitlab-ci-token:$SECRET_GIT_TOKEN@gitlab.wikimedia.org/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME.git" doc-branch
+    - |
+      # update old documentation
+      cd doc-branch;
+      shopt -s nullglob;
+      for file in */*.html; do
+        base=${file##*/};
+        # replace any existing version warnings with the marker (that is also in layout.tmpl)
+        sed -i 's|<p class="version-warning"><strong>Warning:</strong> This is an old version. The latest stable version is <a href="../[^"]*">[^<]*</a>.</p>|<!-- VERSION-WARNING -->|' -- "$file";
+        # replace the marker (whether from layout.tmpl or from the previous command) with current version warning
+        sed -i 's|<!-- VERSION-WARNING -->|<p class="version-warning"><strong>Warning:</strong> This is an old version. The latest stable version is <a href="../${{ github.ref_name }}/'"$base"'">${{ github.ref_name }}</a>.</p>|' -- "$file";
+      done;
+      # update redirect to latest version
+      sed -i '/http-equiv/ s|^.*$|<meta http-equiv="refresh" content="0; URL=${{ github.ref_name }}/">|' index.html;
+    - |
+      # publish new documentation
+      mv doc "doc-branch/$CI_COMMIT_TAG";
+      cd doc-branch;
+      git add .;
+      git commit -m "Publish docs for $CI_COMMIT_TAG";
+      git push;
