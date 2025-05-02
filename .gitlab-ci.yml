@@ -32,12 +32,8 @@ release-job:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d/'
   image: registry.gitlab.com/gitlab-org/release-cli
-  release:
-    name: $CI_COMMIT_TAG
-    tag_name: $CI_COMMIT_TAG
-    description: $CI_COMMIT_TAG_MESSAGE
   script:
-    - "true"
+    - release-cli create --name="$CI_COMMIT_TAG" --tag-name="$CI_COMMIT_TAG" --description="$CI_COMMIT_TAG_MESSAGE"
 
 doc-job:
   stage: release
