@@ -1,6 +1,6 @@
 include:
-  - project: 'repos/m3api/tmp-m3api'
-    file: '/.gitlab-ci-template.yml'
+  - project: repos/m3api/tmp-m3api
+    file: /.gitlab-ci-template.yml
 
 stages:
   - test
