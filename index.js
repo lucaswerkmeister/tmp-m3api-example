@@ -1,5 +1,5 @@
 /**
- * Returns its argument, unchanged.
+ * Returns its argument unchanged.
  *
  * @param {*} v
  * @return {*}
