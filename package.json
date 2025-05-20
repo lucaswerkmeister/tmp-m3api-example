@@ -1,6 +1,6 @@
 {
 	"name": "tmp-m3api-example",
-	"version": "0.0.1",
+	"version": "0.0.23",
 	"description": "m3api extension package to TODO.",
 	"main": "index.js",
 	"type": "module",
