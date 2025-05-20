@@ -15,5 +15,8 @@ test-package-lock-job:
 release-job:
   extends: .release-job
 
+publish-job:
+  extends: .publish-job
+
 doc-job:
   extends: .doc-job
