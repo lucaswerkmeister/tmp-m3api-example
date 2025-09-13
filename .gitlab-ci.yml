@@ -1,6 +1,7 @@
 include:
   - project: repos/m3api/ci-templates
     file: /test+release.yml
+    ref: wip
 
 stages:
   - test
